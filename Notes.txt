@@ -1,0 +1,71 @@
+==> This project uses Golang - MySql - Gorm - Fiber
+
+--------------------------------------------------------------------------------------------------------
+
+1) Make the .mod file (for packages and versions):
+    go mod init github.com/Pyramakerz/Library_Management_System
+
+2) Install GORM package (to deal with DB):
+    go get -u gorm.io/gorm
+
+3) MySQL package (for database):
+    go get -u gorm.io/driver/mysql
+
+4) For Routing i will use fiber:
+    go get github.com/gofiber/fiber/v2
+
+--------------------------------------------------------------------------------------------------------
+
+I made a database in MySQL
+    the dsn := "root:rana5578652*@tcp(127.0.0.1:3306)/Library_Management_System_PyramakerzTask?charset=utf8mb4&parseTime=True&loc=Local"
+ 
+--------------------------------------------------------------------------------------------------------
+
+To Run the project:
+    go run main.go
+    and test in postman
+
+--------------------------------------------------------------------------------------------------------
+
+- For Swagger:
+1) go get -u github.com/swaggo/swag/cmd/swag@latest
+2) go get -u github.com/swaggo/files 
+3) go get -u github.com/swaggo/fiber-swagger
+4) swag init --dir CMD/Main,PKG/Controllers,PKG/Models,PKG/Config,PKG/Routes,PKG/Utils
+    this is to make the docs folder in the same place as .mod and also see all the .go files in the folders
+    as swag init alone gives me an error because there is no .go files at the root dir
+
+In main file import: 
+    fiberSwagger "github.com/swaggo/fiber-swagger"
+	_ "github.com/Pyramakerz/Library_Management_System/CMD/Main/docs"
+
+and write:
+	app.Get("/swagger/*", fiberSwagger.WrapHandler)
+
+Then the annotations
+
+4) Always before running 
+    If i edit any notatioins:
+        swag init --dir CMD/Main,PKG/Controllers,PKG/Models,PKG/Config,PKG/Routes,PKG/Utils
+
+
+
+// Swagger router ==> http://localhost:9090/swagger/index.html
+
+--------------------------------------------------------------------------------------------------------
+
+1) make sure that 2-Step Verification in gmail account is on 
+    it will be in Manage your Google Account ==> Security
+2) through this link you will add passwords:
+     https://security.google.com/settings/security/apppasswords
+3) make a new app name and create
+    it will give you a password like for this 
+    ==> inoxwuyyzogdvrfs
+
+go get github.com/MakMoinee/go-mith
+
+--------------------------------------------------------------------------------------------------------
+
+Testing package ==>  is the standard way to write unit tests in Go and it is built-in
+
+another choice for testing is the third-party Ginkgo framework.

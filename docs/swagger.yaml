@@ -1,0 +1,469 @@
+basePath: /
+definitions:
+  controllers.CreateBookRequest:
+    properties:
+      authorID:
+        type: integer
+      id:
+        type: integer
+      isbn:
+        type: string
+      publishedDate:
+        type: string
+      title:
+        type: string
+    type: object
+  models.Author:
+    properties:
+      email:
+        type: string
+      id:
+        description: |-
+          The primary key is of an integer type so GORM will automatically set it to auto-increment (if i didn't enter)
+          If i didn't write json it will define the property during Serialization and Deserialization as it is (capitalized)
+        type: integer
+      name:
+        type: string
+    type: object
+  models.Book:
+    properties:
+      author:
+        $ref: '#/definitions/models.Author'
+      authorID:
+        type: integer
+      id:
+        type: integer
+      isbn:
+        type: string
+      publishedDate:
+        type: string
+      title:
+        type: string
+    type: object
+host: localhost:9090
+info:
+  contact: {}
+  description: This API System is for Pyramakerz company having a CRUD operaions for
+    Author and Book
+  title: Library Management System
+  version: "1.0"
+paths:
+  /api/author:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all authors
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Get all authors
+      tags:
+      - authors
+    post:
+      consumes:
+      - application/json
+      description: Create a new author with the provided information
+      parameters:
+      - description: Author data
+        in: body
+        name: author
+        required: true
+        schema:
+          $ref: '#/definitions/models.Author'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Author'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Create a new author
+      tags:
+      - authors
+  /api/author/{authorid}:
+    delete:
+      consumes:
+      - application/json
+      description: Permanently delete an author by their ID
+      parameters:
+      - description: Author ID
+        in: path
+        name: authorid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Delete an author
+      tags:
+      - authors
+    get:
+      consumes:
+      - application/json
+      description: Get a specific author by their ID
+      parameters:
+      - description: Author ID
+        in: path
+        name: authorid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Author'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Get author by ID
+      tags:
+      - authors
+    put:
+      consumes:
+      - application/json
+      description: Update an existing author's information
+      parameters:
+      - description: Author ID
+        in: path
+        name: authorid
+        required: true
+        type: string
+      - description: Updated author data
+        in: body
+        name: author
+        required: true
+        schema:
+          $ref: '#/definitions/models.Author'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Author'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Update an existing author
+      tags:
+      - authors
+  /api/author/softdelete/{authorid}:
+    delete:
+      consumes:
+      - application/json
+      description: Soft delete an author by their ID (sets the deleted_at timestamp)
+      parameters:
+      - description: Author ID
+        in: path
+        name: authorid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Soft delete an author
+      tags:
+      - authors
+  /api/book:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all books, including their authors
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Get all books
+      tags:
+      - books
+    post:
+      consumes:
+      - application/json
+      description: Create a new book with the provided information, including author
+        details
+      parameters:
+      - description: Book data
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.CreateBookRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Book'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Create a new book
+      tags:
+      - books
+  /api/book/{bookid}:
+    delete:
+      consumes:
+      - application/json
+      description: Permanently delete a book by its ID
+      parameters:
+      - description: Book ID
+        in: path
+        name: bookid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Delete a book
+      tags:
+      - books
+    get:
+      consumes:
+      - application/json
+      description: Get a specific book by its ID, including its author details
+      parameters:
+      - description: Book ID
+        in: path
+        name: bookid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Book'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Get book by ID
+      tags:
+      - books
+    put:
+      consumes:
+      - application/json
+      description: Update an existing book's information, including author details
+      parameters:
+      - description: Book ID
+        in: path
+        name: bookid
+        required: true
+        type: string
+      - description: Updated book data
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.CreateBookRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Book'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Update an existing book
+      tags:
+      - books
+  /api/book/search/{title}:
+    get:
+      consumes:
+      - application/json
+      description: Search for books based on a partial or full title match
+      parameters:
+      - description: Book title
+        in: path
+        name: title
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Search books by title
+      tags:
+      - books
+  /api/book/softdelete/{bookid}:
+    delete:
+      consumes:
+      - application/json
+      description: Soft delete a book by its ID (sets the deleted_at timestamp)
+      parameters:
+      - description: Book ID
+        in: path
+        name: bookid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Soft delete a book
+      tags:
+      - books
+swagger: "2.0"
