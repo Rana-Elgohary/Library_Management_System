@@ -54,9 +54,16 @@ func TestGetAllAuthors(t *testing.T) {
 	db := config.GetDB()
 	defer CleanDB(db)
 
+	// 1) arrange
+	// nil ==> as it is a get (doesn't have a body)
 	req := httptest.NewRequest(http.MethodGet, "/api/author", nil)
+
+	// 2) Act
+	// -1 ==> It tells the app.Test method to wait indefinitely for the request to be processed and for the response to be returned.
 	resp, _ := app.Test(req, -1)
 
+	// 3) Assertion
+	// t ==> It is used to log errors and mark tests as failed when assertions do not pass
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 }
 
@@ -81,8 +88,10 @@ func TestCreateAuthor(t *testing.T) {
 	defer CleanDB(db)
 
 	author := models.Author{Name: "Jane Doe", Email: "jane@example.com"}
+	// Converts the Author object into a JSON format.
 	body, _ := json.Marshal(author)
 
+	// bytes.NewReader(body) ==> need to convert that data into a format that can be read by the request.
 	req := httptest.NewRequest(http.MethodPost, "/api/author", bytes.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	resp, _ := app.Test(req, -1)
@@ -103,7 +112,6 @@ func TestUpdateAuthor(t *testing.T) {
 	body, _ := json.Marshal(updatedAuthor)
 
 	req := httptest.NewRequest(http.MethodPut, "/api/author/1", bytes.NewReader(body))
-	req.Header.Set("Content-Type", "application/json")
 	resp, _ := app.Test(req, -1)
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)

@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// app *fiber.App ==> pointer to configure routes and middleware for your web application.
 func Library_Management_System_Routes(app *fiber.App) {
 	app.Get("/api/author", controllers.GetAllAuthors)
 	app.Get("/api/author/:authorid", controllers.GetAuthorByID)

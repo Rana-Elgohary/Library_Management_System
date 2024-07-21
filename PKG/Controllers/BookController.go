@@ -340,7 +340,7 @@ func DeleteBook(c *fiber.Ctx) error {
 
 	var book models.Book
 
-	// db.Unscoped() ==> for Normal delete
+	// db.Unscoped() ==> to search in the un soft  deleted ones
 	if err := db.Unscoped().First(&book, id).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
@@ -355,6 +355,7 @@ func DeleteBook(c *fiber.Ctx) error {
 	}
 
 	// Delete() ==> already make the save operation, GORM will ignore the DeletedAt field and perform the operation as if the record is not soft-deleted
+	// db.Unscoped(): This tells GORM to bypass the soft delete functionality.
 	if err := db.Unscoped().Delete(&book).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error":   true,

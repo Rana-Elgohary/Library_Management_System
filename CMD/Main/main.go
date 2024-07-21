@@ -35,6 +35,9 @@ func main() {
 	// 2) Set the routes
 	app := fiber.New()
 
+	// This is a middleware function provided by the fiber-swagger package that integrates Swagger UI into your Fiber application.
+	// Swagger UI is a web-based interface that shows your API documentation in a user-friendly way.
+	// fiberSwagger.WrapHandler takes care of serving this Swagger UI so you can access it via your browser.
 	app.Get("/swagger/*", fiberSwagger.WrapHandler)
 
 	routes.Library_Management_System_Routes(app)

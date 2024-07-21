@@ -65,7 +65,6 @@ func TestCreateBook(t *testing.T) {
 	body, _ := json.Marshal(newBook)
 
 	req := httptest.NewRequest(http.MethodPost, "/api/book", bytes.NewReader(body))
-	req.Header.Set("Content-Type", "application/json")
 	resp, _ := app.Test(req, -1)
 
 	assert.Equal(t, http.StatusCreated, resp.StatusCode)
@@ -97,7 +96,6 @@ func TestUpdateBook(t *testing.T) {
 	body, _ := json.Marshal(updatedBook)
 
 	req := httptest.NewRequest(http.MethodPut, "/api/book/1", bytes.NewReader(body))
-	req.Header.Set("Content-Type", "application/json")
 	resp, _ := app.Test(req, -1)
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
